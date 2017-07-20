@@ -1,12 +1,16 @@
 import os
-from bottle import Bottle
+from bottle import Bottle, response
+from bson.json_util import dumps, loads
+from models import User
 
 app = Bottle()
 
 
 @app.get('/')
 def index():
-    return "<h1>Funcionando</h1>"
+    response.content_type = 'application/json'
+    user = User.objects(username="diego")
+    return dumps(loads(user.to_json()))
 
 
 if __name__ == '__main__':
