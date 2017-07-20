@@ -8,11 +8,24 @@ app = Bottle()
 
 @app.get('/')
 def index():
-    response.content_type = 'application/json'
-    user = User.objects(username="diego")
-    return dumps(loads(user.to_json()))
+    try:
+        user = User.objects()
+        if user:
+            response.status = 200
+            response.content_type = 'application/json'
+            return dumps(loads(user.to_json()))
+        else:
+            response.status = 404
+            print("e vazia")
+            response.content_type = 'application/json'
+            return dumps(loads(user.to_json()))
+
+    except ConnectionError as e:
+        response.status = 500
+        raise ConnectionError(e)
 
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
     app.run(host='127.0.0.1', port=port, debug=True, reloader=True)
+
