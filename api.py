@@ -13,10 +13,10 @@ def index():
         if user:
             response.status = 200
             response.content_type = 'application/json'
+            print(User.login("Diego", "261216"))
             return dumps(loads(user.to_json()))
         else:
             response.status = 404
-            print("e vazia")
             response.content_type = 'application/json'
             return dumps(loads(user.to_json()))
 
@@ -26,6 +26,7 @@ def index():
 
 
 if __name__ == '__main__':
+    # User.create_user("Diego", "261216", "teste@gmail.com", "Diego", "Delmiro", "Programmer")1
     port = int(os.environ.get('PORT', 8080))
     app.run(host='127.0.0.1', port=port, debug=True, reloader=True)
 
