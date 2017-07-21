@@ -27,10 +27,14 @@ class User(Document):
             raise Exception(e)
 
     @classmethod
+    def buscar_usuario(cls, username):
+        return cls.objects(username=username)
+
+    @classmethod
     def login(cls, username, password):
         try:
-            user = cls.objects(username=username)
-            for u in user:
-                print(u)
+            for user in cls.objects(username=username):
+                return bcrypt.hashpw(password.encode('utf-8'),
+                                     user.password.encode('utf-8')) == user.password.encode('utf-8')
         except Exception as e:
             raise Exception(e)
